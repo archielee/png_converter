@@ -9,18 +9,18 @@ Requires:
 - cmake (for compilation)
 
 ## Compiling the executable
-1. Run `cmake .` in the top-level
-2. Many files will be generated, among which is a Makefile. Once this file is present, simply run `make` in the repository to compile.
+1. Run `cmake .` in the build directory
+2. Many files will be generated, among which is a Makefile. Once this file is present, simply run `make` in the build directory to compile
 3. An executable should be generated in the top-level folder named "png_converter"
 
 ## Usage
-The utility currently only works for RGB24 images, 1280x1024. This will be expanded in the future.
+The utility currently supports RGB24, RGB32, MONO8, and MONO16 images. I've only tested with images of size 1280x1024, but should theoretically work for other image sizes. This will be expanded in the future.
 
-Run the executable in the command-line by running
+Run the executable in the command-line
 ```
-$ ./png_converter <list_of_binary_files>
+$ ./png_converter <options>
 
-ex:
-$ ./png_converter ~/test_images/*.bin
+help menu:
+$ ./png_converter -h
 ```
 The PNG images will be in the same directory as the binary images.
