@@ -2,9 +2,10 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <thread>
+#include <boost/thread.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/program_options.hpp>
-#include <boost/thread.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/core.hpp>
 
@@ -111,6 +112,7 @@ std::vector<char> open_file(std::string filename) {
 
         img_buffer.resize(length);
 
+        // read into buffer
         in_file.read(&img_buffer[0], length);
         in_file.close();
     }
@@ -215,20 +217,31 @@ int main (int argc, char** argv) {
         }
     }
 
-    // process files
-    for (size_t i = 0; i < files.size(); i++) {
-        // check file extension
-        if (fs::path(files[i]).extension() == ".bin") {
-#if DEBUG
-            std::cout << "Processing " << files[i] << std::endl;
-#endif
+    std::vector<std::unique_ptr<std::thread> > threads;
 
-            compress_image(files[i], img_w, img_h, img_type);
+    // process files
+    for (auto file : files) {
+        // check file extension
+        if (fs::path(file).extension() == ".bin") {
+#if DEBUG
+            std::cout << "Processing " << file << std::endl;
+#endif
+            std::unique_ptr<std::thread> ptr = std::make_unique<std::thread>(
+                                                    compress_image,
+                                                    file,
+                                                    img_w,
+                                                    img_h,
+                                                    img_type);
+            threads.push_back(std::move(ptr));
         }
         else {
-            std::cout << "Invalid file (" << files[i] << "): only supports "
+            std::cout << "Invalid file (" << file << "): only supports "
                          ".bin files" << std::endl;
         }
+    }
+
+    for (auto&& ptr : threads) {
+        ptr->join();
     }
 
     std::cout << "Images converted successfully!" << std::endl;

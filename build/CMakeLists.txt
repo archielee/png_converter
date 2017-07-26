@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 project(png_converter)
 
 ## gnu++11 feature
-set(CMAKE_CXX_FLAGS "-std=gnu++14 -Wall -Wextra ${CMAKE_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS "-std=gnu++14 -Wall -Wextra ${CMAKE_CXX_FLAGS} -pthread")
 
 ## Set OpenCV environment variables
 set(OpenCV_DIR /usr/local/share/OpenCV)
