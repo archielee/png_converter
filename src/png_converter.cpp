@@ -9,7 +9,7 @@
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/core.hpp>
 
-#define DEBUG               0
+#define DEBUG               1
 
 #define DEFAULT_IMG_W       1280
 #define DEFAULT_IMG_H       1080
@@ -165,13 +165,21 @@ void compress_image(std::string filename, int img_w, int img_h,
     std::copy(img_data.begin(), img_data.end(), buffer);
     cv::Mat cv_mat = cv::Mat(img_h, img_w, mat_type, buffer);
 
+#if DEBUG
+    // cout is thread-safe but printing won't be serialized
+    std::cout << "h: " << img_h << " " << "w: " << img_w << " "
+              << "ch: " << num_ch << " " << "type: " << img_type << std::endl;
+#endif
+
     // write into image file
     if (cv::imwrite(png_path, cv_mat, COMPRESSION_PARAMS)) {
 #if DEBUG
+        // cout is thread-safe but printing won't be serialized
         std::cout << "Saved: " << png_path << std::endl;
 #endif
         return;
     }
+    // cout is thread-safe but printing won't be serialized
     std::cout << "imwrite() failed: " << png_path << std::endl;
 
     return;
