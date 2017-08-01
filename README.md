@@ -2,7 +2,7 @@
 
 Converts images stored in a binary file format into PNG images using OpenCV 3
 
-THIS VERSION MAY BE UNSTABLE. A STABLE, SLOWER VERSION EXISTS ON THE VERSION_1 BRANCH
+**__THIS VERSION MAY BE UNSTABLE. A STABLE, SLOWER VERSION EXISTS ON THE VERSION_1 BRANCH__**
 
 Requires:
 - Linux (tested on Ubuntu 16.04)
